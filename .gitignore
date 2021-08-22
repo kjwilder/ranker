@@ -1,3 +1,9 @@
+CPPLINT.cfg
+*.dSYM/
+test_rank
+test_partial_rank
+test_quantiles
+
 # Prerequisites
 *.d
 
