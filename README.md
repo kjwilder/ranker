@@ -37,7 +37,7 @@ C++ templates to compute ranks, order permutations and quantiles.
   to `v` or `a` will sort it.
 - partial_order(v, w, num)
   partial_order(a, size, w, num)
-  - Similar to` order, but the permutation is of length
+  - Similar to `order`, but the permutation is of length
   `num` and only permutes the `num` highest ranked
   elements.
 - quantile(v, q)
