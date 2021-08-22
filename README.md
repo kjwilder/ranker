@@ -46,10 +46,10 @@ C++ templates to compute ranks, order permutations and quantiles.
 
 ### Details
 - method` is an optional string whose value can be
-  "average", "min", "max" or "random". If not specified,
-  it defaults to "average".
+  `average`, `min`, `max` or `random`. If not specified,
+  it defaults to `average`.
 - The elements of` v` or` a` can be any type that can be
-  compared using` "<".
+  compared using` `<`.
 - When `method` == `average`, the base type
   of `w` should be a floating point type as the ranks
   can be non-integral. For other methods, the base type
