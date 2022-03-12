@@ -1,7 +1,6 @@
 ## ranker
 C++ templates to compute ranks, order permutations and quantiles.
 
-
 ### About
 - The file [ranker.h](ranker.h) provides templated functions that compute the
   ranks, order permutations and quantiles of the elements of an array or C++
@@ -35,14 +34,14 @@ C++ templates to compute ranks, order permutations and quantiles.
   - `w` is a C++ vector with an integral type that
     stores a permutation that when applied
     to `v` or `a` will sort it.
-- partial_order(v, w, num)
-  partial_order(a, size, w, num)
+- `partial_order(v, w, num)`
+  `partial_order(a, size, w, num)`
   - Similar to `order`, but the permutation is of length
     `num` and only permutes the `num` highest ranked
     elements.
-- quantile(v, q)
-- quantile(a, size, q)
-  - Compute the q_th quantile of `v` or `a`.
+- `quantile(v, q)`
+- `quantile(a, size, q)`
+  - Compute the `q_th` quantile of `v` or `a`.
 
 ### Details
 - method` is an optional string whose value can be
@@ -55,8 +54,5 @@ C++ templates to compute ranks, order permutations and quantiles.
   can be non-integral. For other methods, the base type
   of `w` can be integral.
 
-### Files:
- - [ranker.h](ranker.h) - A header file containing the functions.
- - [test_rank.cc](test_rank.cc) - A test program using `rank`.
- - [test_partial_rank.cc](test_partial_rank.cc) - A test program using `partial_rank`.
- - [test_quantiles.cc](test_quantiles.cc) - A test program that computes quantiles.
+### Tests
+- `bazel test :all`

@@ -3,6 +3,7 @@ CPPLINT.cfg
 test_rank
 test_partial_rank
 test_quantiles
+bazel-*
 
 # Prerequisites
 *.d
