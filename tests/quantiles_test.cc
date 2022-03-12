@@ -2,8 +2,11 @@
 #include <cstdlib>
 #include <numeric>
 #include <string>
-#include "ranker.h"
+#include <vector>
+#include "quantiles.h"
 #include "gtest/gtest.h"
+
+using std::vector;
 
 const int num_elements = 100;
 const int num_quantiles = 20;
@@ -29,7 +32,7 @@ vector<double> quantile_bounds(const vector<double>& v, double quantile) {
   return low_high;
 }
 
-TEST(QuantilesTest, Base) {
+TEST(QuantilesTest, Baseline) {
   vector<double> vec(num_elements);
   for (auto& element : vec) {
     element = random() % mod_value;
@@ -42,6 +45,34 @@ TEST(QuantilesTest, Base) {
     EXPECT_LE(bounds[0], quant);
     EXPECT_GE(bounds[1], quant);
   }
+}
+
+template<class T>
+void base_expects(const vector<T>& vec) {
+  for (int i = 0; i < vec.size(); ++i) {
+    EXPECT_EQ(i, quantile(vec, 1.0 * i / (vec.size() - 1)));
+  }
+}
+TEST(QuantilesTest, Thirds) {
+  vector<int> vec = {0, 1, 2, 3};
+  base_expects(vec);
+  EXPECT_EQ(1, quantile(vec, 0.5));
+}
+
+TEST(QuantilesTest, DoubleThirds) {
+  vector<double> vec = {0, 1, 2, 3};
+  base_expects(vec);
+  EXPECT_EQ(1.5, quantile(vec, 0.5));
+}
+
+TEST(QuantilesTest, Sevenths) {
+  vector<int> vec = {0, 1, 2, 3, 4, 5, 6, 7};
+  base_expects(vec);
+}
+
+TEST(QuantilesTest, DoubleSevenths) {
+  vector<double> vec = {0, 1, 2, 3, 4, 5, 6, 7};
+  base_expects(vec);
 }
 
 }  // namespace

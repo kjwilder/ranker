@@ -2,9 +2,9 @@
 C++ templates to compute ranks, order permutations and quantiles.
 
 ### About
-- The file [ranker.h](ranker.h) provides templated functions that compute the
-  ranks, order permutations and quantiles of the elements of an array or C++
-  vector.
+- This repo contains header files that provide templated functions that compute
+  the ranks, order permutations and quantiles of the elements of an array or
+  C++ vector.
 - The functions `rank`, `order` and `quantile` are efficient C++
   implementations of R functions with the same name.
 - Each of the above functions has a version that ends with `high`
