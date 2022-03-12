@@ -44,11 +44,11 @@ C++ templates to compute ranks, order permutations and quantiles.
   - Compute the `q_th` quantile of `v` or `a`.
 
 ### Details
-- method` is an optional string whose value can be
+- `method` is an optional string whose value can be
   `average`, `min`, `max` or `random`. If not specified,
   it defaults to `average`.
-- The elements of` v` or` a` can be any type that can be
-  compared using` `<`.
+- The elements of `v` or `a` can be any type that can be
+  compared using `<`.
 - When `method` == `average`, the base type
   of `w` should be a floating point type as the ranks
   can be non-integral. For other methods, the base type
