@@ -48,8 +48,7 @@ void ranker_test(const string& m) {
   for (uint i = 0; i < vec.size(); ++i) {
     vec[i] = random() % mod_value;
   }
-  vector<double> ranks;
-  rank(vec, ranks, m);
+  const auto ranks = rank(vec, m);
   const auto explicit_ranks = explicit_ranker(vec, m);
   ASSERT_EQ(ranks.size(), explicit_ranks.size());
   for (int i = 0; i < ranks.size(); ++i) {

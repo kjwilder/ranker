@@ -9,13 +9,13 @@
 
 const int test_vector_size = 200;
 const int max_value = 10;
-const int partial_ranks = 8;
+const int num_partial_ranks = 8;
 
 using std::endl;
 
 namespace {
 
-vector<double> slow_ranker(const vector<double>& v, const string& m) {
+vector<double> explicit_ranker(const vector<double>& v, const string& m) {
   vector<double> ranks(v.size());
   double max = *std::max_element(v.begin(), v.end());
   vector<double> counts(max + 1);
@@ -25,8 +25,8 @@ vector<double> slow_ranker(const vector<double>& v, const string& m) {
   vector<double> cum_counts(max + 1);
   std::partial_sum(counts.begin(), counts.end(), cum_counts.begin());
   for (int i = 0; i < cum_counts.size(); ++i) {
-    if (cum_counts[i] > partial_ranks) {
-      cum_counts[i] = partial_ranks;
+    if (cum_counts[i] > num_partial_ranks) {
+      cum_counts[i] = num_partial_ranks;
     }
   }
   vector<double> rank_values(cum_counts.size());
@@ -56,19 +56,18 @@ void partial_ranker_test(const string& m) {
   for (uint i = 0; i < vec.size(); ++i) {
     vec[i] = random() % max_value;
   }
-  vector<double> ranks;
-  partial_rank(vec, ranks, partial_ranks, m);
-  const auto slow_ranks = slow_ranker(vec, m);
-  ASSERT_EQ(ranks.size(), slow_ranks.size());
+  const auto ranks = partial_rank(vec, num_partial_ranks, m);
+  const auto explicit_ranks = explicit_ranker(vec, m);
+  ASSERT_EQ(ranks.size(), explicit_ranks.size());
   double num_non_zero = 0.0;
   for (int i = 0; i < ranks.size(); ++i) {
     if (ranks[i] != 0) {
-      EXPECT_EQ(ranks[i], slow_ranks[i])
+      EXPECT_EQ(ranks[i], explicit_ranks[i])
         << "Mismatch at position " << i << endl;
       num_non_zero++;
     }
   }
-  EXPECT_EQ(num_non_zero, partial_ranks);
+  EXPECT_EQ(num_non_zero, num_partial_ranks);
 }
 
 TEST(PartialRankerTest, Average) {
