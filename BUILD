@@ -1,4 +1,11 @@
 cc_test(
+  name = "order_test",
+  size = "small",
+  srcs = ["ranker.h", "tests/order_test.cc"],
+  deps = ["@com_google_googletest//:gtest_main"],
+)
+
+cc_test(
   name = "partial_rank_test",
   size = "small",
   srcs = ["ranker.h", "tests/partial_rank_test.cc"],

@@ -11,14 +11,15 @@ C++ templates to compute ranks, order permutations and quantiles.
   `partial_sort` algorithms in an interesting manner.
 
 ### Usage (see examples in tests directory)
-- `rank(v, method, comparator)`
-- `rank(a, size, method, comparator)`
+- `rank(v, method, decreasing)`
+- `rank(a, size, method, decreasing)`
   - returns a vector of ranks of the elements of `v`.
   - `v` is an input C++ vector
   - `a` is a pointer to an array of length `size`.
   - `method` is the optional method used to assign ranks
     when there are ties (see [Details](#details)).
-  - `comparator` is "less" (the default) or "greater"
+  - `decreasing` defaults to `false`. If `true`, ranks
+    will be computed based on how large the values are.
 - `partial_rank(v, num, method)`
 - `partial_rank(a size, num, method)`
   - Similar to `rank`, but these functions compute only

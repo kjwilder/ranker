@@ -9,13 +9,13 @@ namespace {
 
 TEST(RankerTest, Less) {
   vector<double> vec = {1, 7, 3, 9, 4};
-  const auto ranks = rank(vec, "average", "less");
+  const auto ranks = rank(vec, "average", false);
   ASSERT_EQ(ranks, vector<double>({1, 4, 2, 5, 3}));
 }
 
 TEST(RankerTest, Greater) {
   vector<double> vec = {1, 7, 3, 9, 4};
-  const auto ranks = rank(vec, "average", "greater");
+  const auto ranks = rank(vec, "average", true);
   ASSERT_EQ(ranks, vector<double>({5, 2, 4, 1, 3}));
 }
 

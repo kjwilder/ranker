@@ -11,13 +11,13 @@ namespace {
 
 TEST(PartialRankerTest, Less) {
   vector<double> vec = {1, 7, 3, 9, 4};
-  const auto ranks = partial_rank(vec, 3, "average", "less");
+  const auto ranks = partial_rank(vec, 3, "average", false);
   ASSERT_EQ(ranks, vector<double>({1, 0, 2, 0, 3}));
 }
 
 TEST(PartialRankerTest, Greater) {
   vector<double> vec = {1, 7, 3, 9, 4};
-  const auto ranks = partial_rank(vec, 3, "average", "greater");
+  const auto ranks = partial_rank(vec, 3, "average", true);
   ASSERT_EQ(ranks, vector<double>({0, 2, 0, 1, 3}));
 }
 
