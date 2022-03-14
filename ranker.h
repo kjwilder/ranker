@@ -29,31 +29,26 @@ class ranker {
 
   int operator()(uint i1, uint i2) const { return(C::compare(p[i1], p[i2])); }
 
-  template <class S>
-  void get_orders(vector<S>& w) const {
-    w.resize(sz);
-    w.front() = 0;
-    for (typename vector<S>::iterator i = w.begin(); i != w.end() - 1; ++i)
-      *(i + 1) = *i + 1;
-    std::sort(w.begin(), w.end(), *this);
+  vector<uint> get_orders() const {
+    vector<uint> orders(sz);
+    std::iota(orders.begin(), orders.end(), 0);
+    std::sort(orders.begin(), orders.end(), *this);
+    return orders;
   }
 
-  template <class S>
-  void get_partial_orders(vector<S>& w, uint num) const {
+  vector<uint> get_partial_orders(uint num) const {
+    vector<uint> orders(sz);
     if (num > sz) num = sz;
-    w.resize(sz);
-    w.front() = 0;
-    for (typename vector<S>::iterator i = w.begin(); i != w.end() - 1; ++i)
-      *(i + 1) = *i + 1;
-    std::partial_sort(w.begin(), w.begin() + num, w.end(), *this);
-    w.resize(num);
+    std::iota(orders.begin(), orders.end(), 0);
+    std::partial_sort(orders.begin(), orders.begin() + num, orders.end(), *this);
+    orders.resize(num);
+    return orders;
   }
 
   template <class S>
   void get_ranks(vector<S>& w, const string& method) const {
     w.resize(sz);
-    vector<uint> tmp(w.size());
-    get_orders(tmp);
+    auto tmp = get_orders();
     if (method == "average") {
       for (uint c = 0, reps; c < w.size(); c += reps) { reps = 1;
         while (c + reps < w.size() && p[tmp[c]] == p[tmp[c + reps]]) ++reps;
@@ -78,9 +73,8 @@ class ranker {
   template <class S>
   void get_partial_ranks(vector<S>& w, const string& method, size_t num) const {
     if (num > sz) num = sz;
-    vector<uint> tmp(sz);
-    get_partial_orders(tmp, num);
     w.resize(sz);
+    auto tmp = get_partial_orders(num);
     fill(w.begin(), w.end(), 0);
     if (method == "average") {
       for (uint c = 0, reps; c < num; c += reps) { reps = 1;
@@ -126,19 +120,19 @@ inline void partial_rank(const T* d, uint size, vector<S>& w, uint num,
 
 template <class T, class S>
 inline void order(const vector<T>& v, vector<S>& w)
-  { ranker<T, lt<T> > r(v); r.get_orders(w); }
+  { ranker<T, lt<T> > r(v); w = r.get_orders(); }
 
 template <class T, class S>
 inline void order(const T* d, uint size, vector<S>& w)
-  { ranker<T, lt<T> > r(d, size); r.get_orders(w); }
+  { ranker<T, lt<T> > r(d, size); w = r.get_orders(); }
 
 template <class T, class S>
 inline void partial_order(const vector<T>& v, vector<S>& w, uint num)
-  { ranker<T, lt<T> > r(v); r.get_partial_orders(w, num); }
+  { ranker<T, lt<T> > r(v); w = r.get_partial_orders(num); }
 
 template <class T, class S>
 inline void partial_order(const T* d, uint size, vector<S>& w, uint num)
-  { ranker<T, lt<T> > r(d, size); r.get_partial_orders(w, num); }
+  { ranker<T, lt<T> > r(d, size); w= r.get_partial_orders(num); }
 
 template <class T, class S>
 inline void rankhigh(const vector<T>& v, vector<S>& w,
@@ -162,18 +156,18 @@ inline void partial_rankhigh(const T* d, uint size, vector<S>& w, uint num,
 
 template <class T, class S>
 inline void orderhigh(const vector<T>& v, vector<S>& w)
-  { ranker<T, gt<T> > r(v); r.get_orders(w); }
+  { ranker<T, gt<T> > r(v); w = r.get_orders(); }
 
 template <class T, class S>
 inline void orderhigh(const T* d, uint size, vector<S>& w)
-  { ranker<T, gt<T> > r(d, size); r.get_orders(w); }
+  { ranker<T, gt<T> > r(d, size); w = r.get_orders(); }
 
 template <class T, class S>
 inline void partial_orderhigh(const vector<T>& v, vector<S>& w, uint num)
-  { ranker<T, gt<T> > r(v); r.get_partial_orders(w, num); }
+  { ranker<T, gt<T> > r(v); w = r.get_partial_orders(num); }
 
 template <class T, class S>
 inline void partial_orderhigh(const T* d, uint size, vector<S>& w, uint num)
-  { ranker<T, gt<T> > r(d, size); r.get_partial_orders(w, num); }
+  { ranker<T, gt<T> > r(d, size); w = r.get_partial_orders(num); }
 
 #endif  // RANKER_H_
