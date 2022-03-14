@@ -25,7 +25,7 @@ vector<double> quantile_bounds(const vector<double>& v, double quantile) {
     low_high[0] = vs[v.size() - 1];
     low_high[1] = DBL_MAX;
   } else {
-    uint low_ind = uint(quantile * (v.size() - 1) + 1e-10);
+    unsigned int low_ind = (unsigned int)(quantile * (v.size() - 1) + 1e-10);
     low_high[0] = vs[low_ind];
     low_high[1] = vs[low_ind + 1];
   }
@@ -37,7 +37,7 @@ TEST(QuantilesTest, Baseline) {
   for (auto& element : vec) {
     element = random() % mod_value;
   }
-  for (uint i = 0; i < num_quantiles; ++i) {
+  for (unsigned int i = 0; i < num_quantiles; ++i) {
     double q = i / ((num_quantiles - 1) * 1.0);
     double quant = quantile(vec, q);
     const auto bounds = quantile_bounds(vec, q);
