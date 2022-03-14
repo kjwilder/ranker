@@ -5,12 +5,31 @@
 #include "ranker.h"
 #include "gtest/gtest.h"
 
-const int num_elements = 20;
-const int mod_value = 10;
-
-using std::endl;
-
 namespace {
+
+TEST(RankerTest, Less) {
+  vector<double> vec = {1, 7, 3, 9, 4};
+  const auto ranks = rank(vec, "average", "less");
+  ASSERT_EQ(ranks, vector<double>({1, 4, 2, 5, 3}));
+}
+
+TEST(RankerTest, Greater) {
+  vector<double> vec = {1, 7, 3, 9, 4};
+  const auto ranks = rank(vec, "average", "greater");
+  ASSERT_EQ(ranks, vector<double>({5, 2, 4, 1, 3}));
+}
+
+TEST(RankerTest, Min) {
+  vector<double> vec = {1, 7, 3, 3, 4};
+  const auto ranks = rank(vec, "min");
+  ASSERT_EQ(ranks, vector<double>({1, 5, 2, 2, 4}));
+}
+
+TEST(RankerTest, Max) {
+  vector<double> vec = {1, 7, 3, 3, 4};
+  const auto ranks = rank(vec, "max");
+  ASSERT_EQ(ranks, vector<double>({1, 5, 3, 3, 4}));
+}
 
 vector<double> explicit_ranker(const vector<double>& v, const string& m) {
   vector<double> ranks(v.size());
@@ -44,34 +63,35 @@ vector<double> explicit_ranker(const vector<double>& v, const string& m) {
 }
 
 void ranker_test(const string& m) {
+  const int num_elements = 20;
+  const int mod_value = 10;
   vector<double> vec(num_elements);
   for (uint i = 0; i < vec.size(); ++i) {
     vec[i] = random() % mod_value;
   }
-  vector<double> ranks;
-  rank(vec, ranks, m);
+  const auto ranks = rank(vec, m);
   const auto explicit_ranks = explicit_ranker(vec, m);
   ASSERT_EQ(ranks.size(), explicit_ranks.size());
   for (int i = 0; i < ranks.size(); ++i) {
     EXPECT_EQ(ranks[i], explicit_ranks[i])
-      << "Mismatch at position " << i << endl;
+      << "Mismatch at position " << i << std::endl;
   }
 }
 
-TEST(RankerTest, Average) {
+TEST(RankerTest, SuiteAverage) {
   ranker_test("average");
 }
 
-TEST(RankerTest, Min) {
+TEST(RankerTest, SuiteMin) {
   ranker_test("min");
 }
 
-TEST(RankerTest, Max) {
+TEST(RankerTest, SuiteMax) {
   ranker_test("max");
 }
 
-TEST(RankerTest, Random) {
-  // ranker_test("random")
+TEST(RankerTest, SuiteRandom) {
+  // ranker_test("random");
 }
 
 }  // namespace
