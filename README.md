@@ -27,7 +27,7 @@ C++ templates to compute ranks, order permutations and quantiles.
     assign a rank of 0 to the rest.
 - `order(v)`
 - `order(a, size)`
-  - returns a permutation (vector) that when applied
+  - returns a permutation (vector, 0-based) that when applied
     to `v` or `a` will sort it.
 - `partial_order(v, num)`
   `partial_order(a, size, num)`
