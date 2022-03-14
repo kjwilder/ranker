@@ -7,20 +7,18 @@ C++ templates to compute ranks, order permutations and quantiles.
   C++ vector.
 - The functions `rank`, `order` and `quantile` are efficient C++
   implementations of R functions with the same name.
-- Each of the above functions has a version that ends with `high`
-  (e.g., `rankhigh` and `orderhigh`) that compares elements using `>`
-  instead of `<`.
 - The functions use the C++ standard library `sort` and
   `partial_sort` algorithms in an interesting manner.
 
 ### Usage (see examples in tests directory)
-- `rank(v, method)`
-- `rank(a, size, method)`
+- `rank(v, method, comparator)`
+- `rank(a, size, method, comparator)`
   - returns a vector of ranks of the elements of `v`.
   - `v` is an input C++ vector
   - `a` is a pointer to an array of length `size`.
   - `method` is the optional method used to assign ranks
     when there are ties (see [Details](#details)).
+  - `comparator` is "less" (the default) or "greater"
 - `partial_rank(v, num, method)`
 - `partial_rank(a size, num, method)`
   - Similar to `rank`, but these functions compute only

@@ -1,26 +1,27 @@
 #ifndef RANKER_H_
 #define RANKER_H_
 
-#include <vector>
-#include <string>
 #include <algorithm>
+#include <functional>
+#include <string>
+#include <vector>
 
 using std::vector;
 using std::string;
 
-template <class T>
+template <class T, typename C>
 class ranker {
  private:
   const T* p;
   uint_least64_t sz;
-  std::function<bool (T, T)> C;
+  std::function<bool(const T&, const T&)> comp;
 
  public:
-  explicit ranker(const vector<T>& v, std::function<bool (T, T)> comp) : p(&v[0]), sz(v.size()), C(comp) { }
-  ranker(const T* tp, uint_least64_t s, std::function<bool (T, T)> comp) : p(tp), sz(s), C(comp) { }
+  explicit ranker(const vector<T>& v) : p(&v[0]), sz(v.size()), comp(C()) { }
+  ranker(const T* tp, uint_least64_t s) : p(tp), sz(s), comp(C()) { }
 
   int operator()(uint_least64_t i1, uint_least64_t i2) const {
-    return(C(p[i1], p[i2]));
+    return comp(p[i1], p[i2]);
   }
 
   vector<uint_least64_t> get_orders() const {
@@ -99,113 +100,84 @@ class ranker {
 };
 
 template <class T>
-inline vector<double> rank(
-    const vector<T>& v, const string& method = "average") {
-  ranker<T> r(v, std::less<T>());
-  return r.get_ranks(method);
+inline vector<double> rank(const vector<T>& v,
+    const string& method = "average", const string& comparator = "less") {
+  if (comparator == "less") {
+    return ranker<T, std::less<T>>(v).get_ranks(method);
+  } else {
+    return ranker<T, std::greater<T>>(v).get_ranks(method);
+  }
 }
 
 template <class T>
-inline vector<double> rank(
-    const T* d, uint_least64_t size, const string& method = "average") {
-  ranker<T> r(d, size, std::less<T>());
-  return r.get_ranks(method);
+inline vector<double> rank(const T* d, uint_least64_t size,
+    const string& method = "average", const string& comparator = "less") {
+  if (comparator == "less") {
+    return ranker<T, std::less<T>>(d, size).get_ranks(method);
+  } else {
+    return ranker<T, std::greater<T>>(d, size).get_ranks(method);
+  }
 }
 
 template <class T>
-inline vector<double> partial_rank(
-    const vector<T>& v, uint_least64_t num, const string& method = "average") {
-  ranker<T> r(v, std::less<T>());
-  return r.get_partial_ranks(method, num);
+inline vector<double> partial_rank(const vector<T>& v, size_t num,
+    const string& method = "average", const string& comparator = "less") {
+  if (comparator == "less") {
+    return ranker<T, std::less<T>>(v).get_partial_ranks(method, num);
+  } else {
+    return ranker<T, std::greater<T>>(v).get_partial_ranks(method, num);
+  }
 }
 
 template <class T>
-inline vector<double> partial_rank(
-    const T* d, uint_least64_t size, uint_least64_t num,
-    const string& method = "average") {
-  ranker<T> r(d, size, std::less<T>());
-  return r.get_partial_ranks(method, num);
+inline vector<double> partial_rank(const T* d, uint_least64_t size,
+    uint_least64_t num,
+    const string& method = "average", const string& comparator = "less") {
+  if (comparator == "less") {
+    return ranker<T, std::less<T>>(d, size).get_partial_ranks(method, num);
+  } else {
+    return ranker<T, std::greater<T>>(d, size).get_partial_ranks(method, num);
+  }
 }
 
 template <class T>
-inline vector<uint_least64_t> order(const vector<T>& v) {
-  ranker<T> r(v, std::less<T>());
-  return r.get_orders();
+inline vector<uint_least64_t> order(const vector<T>& v,
+    const string& comparator = "less") {
+  if (comparator == "less") {
+    return ranker<T, std::less<T>>(v).get_orders();
+  } else  {
+    return ranker<T, std::greater<T>>(v).get_orders();
+  }
 }
 
 template <class T>
-inline vector<uint_least64_t> order(const T* d, uint_least64_t size) {
-  ranker<T> r(d, size, std::less<T>());
-  return r.get_orders();
+inline vector<uint_least64_t> order(const T* d, uint_least64_t size,
+    const string& comparator = "less") {
+  if (comparator == "less") {
+    return ranker<T, std::less<T>>(d, size).get_orders();
+  } else  {
+    return ranker<T, std::greater<T>>(d, size).get_orders();
+  }
 }
 
 template <class T>
-inline vector<uint_least64_t> partial_order(
-    const vector<T>& v, uint_least64_t num) {
-  ranker<T> r(v, std::less<T>());
-  return r.get_partial_orders(num);
+inline vector<uint_least64_t> partial_order(const vector<T>& v,
+    uint_least64_t num, const string& comparator = "less") {
+  if (comparator == "less") {
+    return ranker<T, std::less<T>>(v).get_partial_orders(num);
+  } else  {
+    return ranker<T, std::greater<T>>(v).get_partial_orders(num);
+  }
 }
 
 template <class T>
-inline vector<uint_least64_t> partial_order(
-    const T* d, uint_least64_t size, uint_least64_t num) {
-  ranker<T> r(d, size, std::less<T>());
-  return r.get_partial_orders(num);
-}
-
-template <class T>
-inline vector<double> rankhigh(
-    const vector<T>& v, const string& method = "average") {
-  ranker<T> r(v, std::greater<T>());
-  return r.get_ranks(method);
-}
-
-template <class T>
-inline vector<double> rankhigh(
-    const T* d, uint_least64_t size, const string& method = "average") {
-  ranker<T> r(d, size, std::greater<T>());
-  return r.get_ranks(method);
-}
-
-template <class T>
-inline vector<double> partial_rankhigh(
-    const vector<T>& v, uint_least64_t num, const string& method = "average") {
-  ranker<T> r(v, std::greater<T>());
-  return r.get_partial_ranks(method, num);
-}
-
-template <class T>
-inline vector<double> partial_rankhigh(
-    const T* d, uint_least64_t size, uint_least64_t num,
-    const string& method = "average") {
-  ranker<T> r(d, size, std::greater<T>());
-  return r.get_partial_ranks(method, num);
-}
-
-template <class T>
-inline vector<uint_least64_t> orderhigh(const vector<T>& v) {
-  ranker<T> r(v, std::greater<T>());
-  return r.get_orders();
-}
-
-template <class T, class S>
-inline vector<uint_least64_t> orderhigh(const T* d, uint_least64_t size) {
-  ranker<T> r(d, size, std::greater<T>());
-  return r.get_orders();
-}
-
-template <class T, class S>
-inline vector<uint_least64_t> partial_orderhigh(
-    const vector<T>& v, uint_least64_t num) {
-  ranker<T> r(v, std::greater<T>());
-  return r.get_partial_orders(num);
-}
-
-template <class T, class S>
-inline vector<uint_least64_t> partial_orderhigh(
-    const T* d, uint_least64_t size, uint_least64_t num) {
-  ranker<T> r(d, size, std::greater<T>());
-  return r.get_partial_orders(num);
+inline vector<uint_least64_t> partial_order(const T* d, uint_least64_t size,
+    uint_least64_t num, const string& comparator = "less") {
+  if (comparator == "less") {
+    return ranker<T, std::less<T>>(d, size).get_partial_orders(num);
+  } else  {
+    return ranker<T, std::greater<T>>(d, size).get_partial_orders(num);
+  }
 }
 
 #endif  // RANKER_H_
