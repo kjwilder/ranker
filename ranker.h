@@ -69,7 +69,8 @@ class ranker {
     return ranks;
   }
 
-  vector<double> get_partial_ranks(const string& method, size_t num) const {
+  vector<double> get_partial_ranks(
+      const string& method, uint_least64_t num) const {
     vector<double> ranks(sz);
     if (num > sz) num = sz;
     auto tmp = get_partial_orders(num);
@@ -120,7 +121,7 @@ inline vector<double> rank(const T* d, uint_least64_t size,
 }
 
 template <class T>
-inline vector<double> partial_rank(const vector<T>& v, size_t num,
+inline vector<double> partial_rank(const vector<T>& v, uint_least64_t num,
     const string& method = "average", const string& comparator = "less") {
   if (comparator == "less") {
     return ranker<T, std::less<T>>(v).get_partial_ranks(method, num);
