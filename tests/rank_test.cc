@@ -12,7 +12,7 @@ using std::endl;
 
 namespace {
 
-vector<double> slow_ranker(const vector<double>& v, const string& m) {
+vector<double> explicit_ranker(const vector<double>& v, const string& m) {
   vector<double> ranks(v.size());
   double max = *std::max_element(v.begin(), v.end());
   vector<double> counts(max + 1);
@@ -50,10 +50,11 @@ void ranker_test(const string& m) {
   }
   vector<double> ranks;
   rank(vec, ranks, m);
-  const auto slow_ranks = slow_ranker(vec, m);
-  ASSERT_EQ(ranks.size(), slow_ranks.size());
+  const auto explicit_ranks = explicit_ranker(vec, m);
+  ASSERT_EQ(ranks.size(), explicit_ranks.size());
   for (int i = 0; i < ranks.size(); ++i) {
-    EXPECT_EQ(ranks[i], slow_ranks[i]) << "Mismatch at position " << i << endl;
+    EXPECT_EQ(ranks[i], explicit_ranks[i])
+      << "Mismatch at position " << i << endl;
   }
 }
 
