@@ -102,21 +102,21 @@ class ranker {
 template <class T>
 inline vector<double> rank(
     const vector<T>& v, const string& method = "average") {
-  ranker<T, lt<T> > r(v);
+  ranker<T, lt<T>> r(v);
   return r.get_ranks(method);
 }
 
 template <class T>
 inline vector<double> rank(
     const T* d, uint_least64_t size, const string& method = "average") {
-  ranker<T, lt<T> > r(d, size);
+  ranker<T, lt<T>> r(d, size);
   return r.get_ranks(method);
 }
 
 template <class T>
 inline vector<double> partial_rank(
     const vector<T>& v, uint_least64_t num, const string& method = "average") {
-  ranker<T, lt<T> > r(v);
+  ranker<T, lt<T>> r(v);
   return r.get_partial_ranks(method, num);
 }
 
@@ -124,54 +124,54 @@ template <class T>
 inline vector<double> partial_rank(
     const T* d, uint_least64_t size, uint_least64_t num,
     const string& method = "average") {
-  ranker<T, lt<T> > r(d, size);
+  ranker<T, lt<T>> r(d, size);
   return r.get_partial_ranks(method, num);
 }
 
 template <class T>
 inline vector<uint_least64_t> order(const vector<T>& v) {
-  ranker<T, lt<T> > r(v);
+  ranker<T, lt<T>> r(v);
   return r.get_orders();
 }
 
 template <class T>
 inline vector<uint_least64_t> order(const T* d, uint_least64_t size) {
-  ranker<T, lt<T> > r(d, size);
+  ranker<T, lt<T>> r(d, size);
   return r.get_orders();
 }
 
 template <class T>
 inline vector<uint_least64_t> partial_order(
     const vector<T>& v, uint_least64_t num) {
-  ranker<T, lt<T> > r(v);
+  ranker<T, lt<T>> r(v);
   return r.get_partial_orders(num);
 }
 
 template <class T>
 inline vector<uint_least64_t> partial_order(
     const T* d, uint_least64_t size, uint_least64_t num) {
-  ranker<T, lt<T> > r(d, size);
+  ranker<T, lt<T>> r(d, size);
   return r.get_partial_orders(num);
 }
 
 template <class T>
 inline vector<double> rankhigh(
     const vector<T>& v, const string& method = "average") {
-  ranker<T, gt<T> > r(v);
+  ranker<T, gt<T>> r(v);
   return r.get_ranks(method);
 }
 
 template <class T>
 inline vector<double> rankhigh(
     const T* d, uint_least64_t size, const string& method = "average") {
-  ranker<T, gt<T> > r(d, size);
+  ranker<T, gt<T>> r(d, size);
   return r.get_ranks(method);
 }
 
 template <class T>
 inline vector<double> partial_rankhigh(
     const vector<T>& v, uint_least64_t num, const string& method = "average") {
-  ranker<T, gt<T> > r(v);
+  ranker<T, gt<T>> r(v);
   return r.get_partial_ranks(method, num);
 }
 
@@ -179,33 +179,33 @@ template <class T>
 inline vector<double> partial_rankhigh(
     const T* d, uint_least64_t size, uint_least64_t num,
     const string& method = "average") {
-  ranker<T, gt<T> > r(d, size);
+  ranker<T, gt<T>> r(d, size);
   return r.get_partial_ranks(method, num);
 }
 
 template <class T>
 inline vector<uint_least64_t> orderhigh(const vector<T>& v) {
-  ranker<T, gt<T> > r(v);
+  ranker<T, gt<T>> r(v);
   return r.get_orders();
 }
 
 template <class T, class S>
 inline vector<uint_least64_t> orderhigh(const T* d, uint_least64_t size) {
-  ranker<T, gt<T> > r(d, size);
+  ranker<T, gt<T>> r(d, size);
   return r.get_orders();
 }
 
 template <class T, class S>
 inline vector<uint_least64_t> partial_orderhigh(
     const vector<T>& v, uint_least64_t num) {
-  ranker<T, gt<T> > r(v);
+  ranker<T, gt<T>> r(v);
   return r.get_partial_orders(num);
 }
 
 template <class T, class S>
 inline vector<uint_least64_t> partial_orderhigh(
     const T* d, uint_least64_t size, uint_least64_t num) {
-  ranker<T, gt<T> > r(d, size);
+  ranker<T, gt<T>> r(d, size);
   return r.get_partial_orders(num);
 }
 
