@@ -27,6 +27,21 @@ TEST(PartialRankerTest, Min) {
   ASSERT_EQ(ranks, vector<double>({1, 0, 2, 2, 0}));
 }
 
+TEST(PartialRankerTest, Min2) {
+  // This may not be nondeterministic without a stable sort.
+  vector<double> vec = {1, 7, 3, 3, 4};
+  const auto ranks = partial_rank(vec, 2, "min");
+  ASSERT_EQ(ranks, vector<double>({1, 0, 2, 0, 0}));
+  // ASSERT_EQ(ranks, vector<double>({1, 0, 0, 2, 0})); Also possible?
+}
+
+TEST(PartialRankerTest, AllTies) {
+  // See previous test comments.
+  vector<double> vec = {1, 1, 1, 1, 1, 1, 1, 1};
+  const auto ranks = partial_rank(vec, 5, "min");
+  ASSERT_EQ(ranks, vector<double>({1, 1, 1, 1, 1, 0, 0, 0}));
+}
+
 TEST(PartialRankerTest, Max) {
   vector<double> vec = {1, 7, 3, 3, 4};
   const auto ranks = partial_rank(vec, 3, "max");
@@ -60,9 +75,7 @@ vector<double> explicit_ranker(
       rank_values[i] = cum_counts[i - 1] + 1;
     }
   } else if (m == "max") {
-    for (int i = 0; i < rank_values.size(); ++i) {
-      rank_values[i] = cum_counts[i];
-    }
+    rank_values = cum_counts;
   }
   for (int i = 0; i < ranks.size(); ++i) {
     ranks[i] = rank_values[v[i]];
@@ -70,42 +83,45 @@ vector<double> explicit_ranker(
   return ranks;
 }
 
-void partial_ranker_test(const string& m) {
+void test_suite(const string& m) {
   const int test_vector_size = 200;
   const int max_value = 10;
   const int num_partial_ranks = 8;
+  const int num_iterations = 20;
   vector<double> vec(test_vector_size);
-  for (uint i = 0; i < vec.size(); ++i) {
-    vec[i] = random() % max_value;
-  }
-  const auto ranks = partial_rank(vec, num_partial_ranks, m);
-  const auto explicit_ranks = explicit_ranker(vec, num_partial_ranks, m);
-  ASSERT_EQ(ranks.size(), explicit_ranks.size());
-  double num_non_zero = 0.0;
-  for (int i = 0; i < ranks.size(); ++i) {
-    if (ranks[i] != 0) {
-      EXPECT_EQ(ranks[i], explicit_ranks[i])
-        << "Mismatch at position " << i << std::endl;
-      num_non_zero++;
+  for (unsigned int iter = 0; iter < num_iterations; ++iter) {
+    for (unsigned int i = 0; i < vec.size(); ++i) {
+      vec[i] = random() % max_value;
     }
+    const auto ranks = partial_rank(vec, num_partial_ranks, m);
+    const auto explicit_ranks = explicit_ranker(vec, num_partial_ranks, m);
+    ASSERT_EQ(ranks.size(), explicit_ranks.size());
+    double num_non_zero = 0.0;
+    for (int i = 0; i < ranks.size(); ++i) {
+      if (ranks[i] != 0) {
+        EXPECT_EQ(ranks[i], explicit_ranks[i])
+          << "Mismatch at position " << i << std::endl;
+        num_non_zero++;
+      }
+    }
+    EXPECT_EQ(num_non_zero, num_partial_ranks);
   }
-  EXPECT_EQ(num_non_zero, num_partial_ranks);
 }
 
 TEST(PartialRankerTest, SuiteAverage) {
-  partial_ranker_test("average");
+  test_suite("average");
 }
 
 TEST(PartialRankerTest, SuiteMin) {
-  partial_ranker_test("min");
+  test_suite("min");
 }
 
 TEST(PartialRankerTest, SuiteMax) {
-  partial_ranker_test("max");
+  test_suite("max");
 }
 
 TEST(PartialRankerTest, SuiteRandom) {
-  // partial_ranker_test("random")
+  // test_suite("random")
 }
 
 }  // namespace

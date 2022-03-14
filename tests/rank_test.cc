@@ -52,9 +52,7 @@ vector<double> explicit_ranker(const vector<double>& v, const string& m) {
       rank_values[i] = cum_counts[i - 1] + 1;
     }
   } else if (m == "max") {
-    for (int i = 0; i < rank_values.size(); ++i) {
-      rank_values[i] = cum_counts[i];
-    }
+    rank_values = cum_counts;
   }
   for (int i = 0; i < ranks.size(); ++i) {
     ranks[i] = rank_values[v[i]];
@@ -62,36 +60,39 @@ vector<double> explicit_ranker(const vector<double>& v, const string& m) {
   return ranks;
 }
 
-void ranker_test(const string& m) {
+void test_suite(const string& m) {
   const int num_elements = 20;
   const int mod_value = 10;
+  const int num_iterations = 20;
   vector<double> vec(num_elements);
-  for (uint i = 0; i < vec.size(); ++i) {
-    vec[i] = random() % mod_value;
-  }
-  const auto ranks = rank(vec, m);
-  const auto explicit_ranks = explicit_ranker(vec, m);
-  ASSERT_EQ(ranks.size(), explicit_ranks.size());
-  for (int i = 0; i < ranks.size(); ++i) {
-    EXPECT_EQ(ranks[i], explicit_ranks[i])
-      << "Mismatch at position " << i << std::endl;
+  for (int iter = 0; iter < num_iterations; ++iter) {
+    for (unsigned int i = 0; i < vec.size(); ++i) {
+      vec[i] = random() % mod_value;
+    }
+    const auto ranks = rank(vec, m);
+    const auto explicit_ranks = explicit_ranker(vec, m);
+    ASSERT_EQ(ranks.size(), explicit_ranks.size());
+    for (int i = 0; i < ranks.size(); ++i) {
+      EXPECT_EQ(ranks[i], explicit_ranks[i])
+        << "Mismatch at position " << i << std::endl;
+    }
   }
 }
 
 TEST(RankerTest, SuiteAverage) {
-  ranker_test("average");
+  test_suite("average");
 }
 
 TEST(RankerTest, SuiteMin) {
-  ranker_test("min");
+  test_suite("min");
 }
 
 TEST(RankerTest, SuiteMax) {
-  ranker_test("max");
+  test_suite("max");
 }
 
 TEST(RankerTest, SuiteRandom) {
-  // ranker_test("random");
+  // test_suite("random");
 }
 
 }  // namespace
