@@ -49,7 +49,7 @@ TEST(QuantilesTest, Baseline) {
 
 template<class T>
 void base_expects(const vector<T>& vec) {
-  for (auto i = 0; i < vec.size(); ++i) {
+  for (typename std::vector<T>::size_type i = 0; i < vec.size(); ++i) {
     EXPECT_EQ(i, quantile(vec, 1.0 * i / (vec.size() - 1)));
   }
 }

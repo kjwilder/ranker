@@ -42,19 +42,19 @@ vector<double> explicit_ranker(const vector<double>& v, const string& m) {
   std::partial_sum(counts.begin(), counts.end(), cum_counts.begin());
   vector<double> rank_values(cum_counts.size());
   if (m == "average") {
-    for (auto i = 1; i < rank_values.size(); ++i) {
+    for (std::vector<double>::size_type i = 1; i < rank_values.size(); ++i) {
       rank_values[i] = (cum_counts[i - 1] + cum_counts[i] + 1.0) / 2.0;
     }
     rank_values[0] = cum_counts[0] / 2.0 + 0.5;
   } else if (m == "min") {
     rank_values[0] = 1;
-    for (auto i = 1; i < rank_values.size(); ++i) {
+    for (std::vector<double>::size_type i = 1; i < rank_values.size(); ++i) {
       rank_values[i] = cum_counts[i - 1] + 1;
     }
   } else if (m == "max") {
     rank_values = cum_counts;
   }
-  for (auto i = 0; i < ranks.size(); ++i) {
+  for (std::vector<double>::size_type i = 0; i < ranks.size(); ++i) {
     ranks[i] = rank_values[v[i]];
   }
   return ranks;
@@ -66,13 +66,13 @@ void test_suite(const string& m) {
   const int num_iterations = 20;
   vector<double> vec(num_elements);
   for (auto iter = 0; iter < num_iterations; ++iter) {
-    for (auto i = 0; i < vec.size(); ++i) {
+    for (std::vector<double>::size_type i = 0; i < vec.size(); ++i) {
       vec[i] = random() % mod_value;
     }
     const auto ranks = rank(vec, m);
     const auto explicit_ranks = explicit_ranker(vec, m);
     ASSERT_EQ(ranks.size(), explicit_ranks.size());
-    for (auto i = 0; i < ranks.size(); ++i) {
+    for (std::vector<double>::size_type i = 0; i < ranks.size(); ++i) {
       EXPECT_EQ(ranks[i], explicit_ranks[i])
         << "Mismatch at position " << i << std::endl;
     }
