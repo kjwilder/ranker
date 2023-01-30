@@ -37,7 +37,7 @@ TEST(QuantilesTest, Baseline) {
   for (auto& element : vec) {
     element = random() % mod_value;
   }
-  for (unsigned int i = 0; i < num_quantiles; ++i) {
+  for (auto i = 0; i < num_quantiles; ++i) {
     double q = i / ((num_quantiles - 1) * 1.0);
     double quant = quantile(vec, q);
     const auto bounds = quantile_bounds(vec, q);
@@ -49,7 +49,7 @@ TEST(QuantilesTest, Baseline) {
 
 template<class T>
 void base_expects(const vector<T>& vec) {
-  for (int i = 0; i < vec.size(); ++i) {
+  for (auto i = 0; i < vec.size(); ++i) {
     EXPECT_EQ(i, quantile(vec, 1.0 * i / (vec.size() - 1)));
   }
 }
