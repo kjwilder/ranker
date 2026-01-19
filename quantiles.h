@@ -25,6 +25,6 @@ T quantile(const T* d, const uint size, F q) {
 
 template <class T, class F>
 inline T quantile(const std::vector<T>& v, F q)
-  { return quantile(&v[0], v.size(), q); }
+  { return quantile(v.data(), v.size(), q); }
 
 #endif  // QUANTILES_H_
