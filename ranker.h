@@ -2,7 +2,9 @@
 #define RANKER_H_
 
 #include <algorithm>
+#include <cstdint>
 #include <functional>
+#include <numeric>
 #include <string>
 #include <vector>
 
