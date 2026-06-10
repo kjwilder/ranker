@@ -16,13 +16,13 @@ class ranker {
  private:
   const T* p;
   uint_least64_t sz;
-  std::function<bool(const T&, const T&)> comp;
+  C comp;
 
  public:
-  explicit ranker(const vector<T>& v) : p(v.data()), sz(v.size()), comp(C()) { }
-  ranker(const T* tp, uint_least64_t s) : p(tp), sz(s), comp(C()) { }
+  explicit ranker(const vector<T>& v) : p(v.data()), sz(v.size()), comp() { }
+  ranker(const T* tp, uint_least64_t s) : p(tp), sz(s), comp() { }
 
-  int operator()(uint_least64_t i1, uint_least64_t i2) const {
+  bool operator()(uint_least64_t i1, uint_least64_t i2) const {
     return comp(p[i1], p[i2]);
   }
 
